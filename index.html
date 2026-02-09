@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For Ayushi ❤️</title>
+
+<style>
+/* ===== BODY ===== */
+body{
+margin:0;
+font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+background:linear-gradient(135deg,#ffd6e7,#fff0f5,#ffe4ec);
+overflow:hidden;
+padding:15px;
+}
+
+/* ===== TITLE ===== */
+h1{
+color:#ff2e63;
+font-size:clamp(26px,6vw,42px);
+text-align:center;
+line-height:1.25;
+text-shadow:2px 2px 0 #fff,4px 4px 0 #ffc1d6;
+}
+
+.container{text-align:center;width:100%;}
+
+/* ===== BUTTONS ===== */
+button{
+padding:16px 32px;
+font-size:20px;
+border:none;
+border-radius:40px;
+margin:12px;
+cursor:pointer;
+transition:.15s;
+box-shadow:0 6px 0 rgba(0,0,0,0.15);
+}
+
+button:active{
+transform:translateY(4px) scale(.96);
+box-shadow:0 2px 0 rgba(0,0,0,0.2);
+}
+
+#yes{
+background:linear-gradient(145deg,#ff4f87,#ff7aa2);
+color:white;
+}
+
+#no{
+background:#f3f3f3;
+position:absolute;
+}
+
+/* ===== LOVE SCREEN ===== */
+#loveScreen{
+position:fixed;
+top:0;left:0;
+width:100%;height:100%;
+background:#ff4d79;
+display:none;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+padding:20px;
+box-sizing:border-box;
+}
+
+.big{
+font-size:clamp(30px,7vw,48px);
+color:white;
+margin-bottom:20px;
+text-align:center;
+}
+
+/* ===== LETTER ===== */
+.envelope{
+background:white;
+color:#222;
+padding:22px;
+border-radius:20px;
+width:100%;
+max-width:500px;
+height:60vh;
+overflow-y:auto;
+font-size:17px;
+line-height:1.7;
+box-shadow:0 10px 30px rgba(0,0,0,0.25);
+animation:openLetter .6s ease;
+}
+
+@keyframes openLetter{
+from{transform:scale(.8) rotateX(80deg);opacity:0;}
+to{transform:scale(1) rotateX(0);opacity:1;}
+}
+
+.envelope::-webkit-scrollbar{width:8px;}
+.envelope::-webkit-scrollbar-thumb{
+background:#ff7aa2;
+border-radius:10px;
+}
+
+/* ===== HEARTS ===== */
+.heart{position:fixed;font-size:24px;animation:fall linear forwards;}
+@keyframes fall{from{transform:translateY(-10vh);}to{transform:translateY(110vh);}}
+
+/* ===== CONFETTI ===== */
+.confetti{position:fixed;width:10px;height:14px;top:-10px;opacity:.9;animation:confettiFall linear forwards;}
+@keyframes confettiFall{to{transform:translateY(110vh) rotate(720deg);}}
+
+/* ===== CLICK POP ===== */
+@keyframes bubble{0%{transform:scale(.5);opacity:1;}100%{transform:translateY(-60px) scale(1.6);opacity:0;}}
+</style>
+</head>
+
+<body>
+
+<audio id="bgmusic" loop autoplay>
+<source src="romantic.mp3" type="audio/mpeg">
+</audio>
+
+<div class="container">
+<h1>Ayushi Kannojiya<br>Will you be my Valentine ❤️</h1>
+<button id="yes">Yes 😍</button>
+<button id="no">No 😢</button>
+</div>
+
+<div id="loveScreen">
+<div class="big">I LOVE YOU SO MUCH ❤️</div>
+<div class="envelope" id="finalMsg"></div>
+</div>
+
+<script>
+const noBtn=document.getElementById("no");
+const yesBtn=document.getElementById("yes");
+const loveScreen=document.getElementById("loveScreen");
+const music=document.getElementById("bgmusic");
+const finalMsg=document.getElementById("finalMsg");
+
+let clickedNo=false;
+
+/* autoplay fallback */
+window.addEventListener("load",()=>{
+let p=music.play();
+if(p!==undefined){p.catch(()=>{document.body.addEventListener("click",()=>music.play(),{once:true});});}
+});
+
+/* NO messages */
+const messages=[
+"Try again Ayushi Ji 😝",
+"Think again 🤔",
+"Are you sure Ayshuu?? 🥺",
+"Don’t break my heart 💔",
+"Last chance 😭",
+"please say Yes ❤️",
+"thats not possible 😤",
+"you have to say yes 😌",
+"You really love me na 🥹",
+"Betuu Come on PLZ 🥰"
+];
+
+let index=0;
+
+noBtn.addEventListener("click",e=>{
+clickedNo=true;
+if(navigator.vibrate)navigator.vibrate(200);
+
+noBtn.innerText=messages[index%messages.length];
+index++;
+
+noBtn.style.left=Math.random()*(window.innerWidth-120)+"px";
+noBtn.style.top=Math.random()*(window.innerHeight-60)+"px";
+
+bubble(e);
+});
+
+yesBtn.addEventListener("click",e=>{
+loveScreen.style.display="flex";
+
+if(clickedNo){
+finalMsg.innerHTML=`<p>(betu I Know you have Tried so Hard to Say no but But that was imposible <br> 
+     )</p>`;
+}else{
+finalMsg.innerHTML=`<p>(Write your long message here if yes💌)</p>`;
+}
+
+startHearts();
+startConfetti();
+bubble(e);
+});
+
+function startHearts(){
+setInterval(()=>{
+const h=document.createElement("div");
+h.className="heart";
+h.innerHTML="❤️";
+h.style.left=Math.random()*100+"vw";
+h.style.fontSize=(20+Math.random()*40)+"px";
+h.style.animationDuration=(3+Math.random()*3)+"s";
+document.body.appendChild(h);
+setTimeout(()=>h.remove(),6000);
+},120);
+}
+
+function startConfetti(){
+for(let i=0;i<120;i++){
+const c=document.createElement("div");
+c.className="confetti";
+c.style.left=Math.random()*100+"vw";
+c.style.background=`hsl(${Math.random()*360},100%,50%)`;
+c.style.animationDuration=(3+Math.random()*3)+"s";
+document.body.appendChild(c);
+setTimeout(()=>c.remove(),6000);
+}
+}
+
+function bubble(e){
+const b=document.createElement("div");
+b.innerHTML="💗";
+b.style.position="fixed";
+b.style.left=e.clientX+"px";
+b.style.top=e.clientY+"px";
+b.style.fontSize="22px";
+b.style.pointerEvents="none";
+b.style.animation="bubble 700ms ease-out forwards";
+document.body.appendChild(b);
+setTimeout(()=>b.remove(),700);
+}
+</script>
+
+</body>
+</html>
